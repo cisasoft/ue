@@ -32,11 +32,11 @@ public class ActionEnter {
 		this.actionType = request.getParameter( "action" );
 		this.contextPath = request.getContextPath();
 		this.configManager = ConfigManager.getInstance( this.rootPath, this.contextPath, request.getRequestURI() );
-		System.out.println("request-->"+request+",\n"+
-				"rootPath-->"+rootPath+",\n"+
-				"actionType-->"+this.actionType+",\n"+
-				"contextPath-->"+this.contextPath+",\n"+
-				"configManager-->"+this.configManager+",\n");
+		System.out.println("request-->"+request+"\n"+
+				"rootPath-->"+rootPath+"\n"+
+				"actionType-->"+this.actionType+"\n"+
+				"contextPath-->"+this.contextPath+"\n"+
+				"configManager-->"+this.configManager+"\n");
 	}
 	
 	public String exec () {
@@ -95,15 +95,15 @@ public class ActionEnter {
 			case ActionMap.LIST_IMAGE:
 			case ActionMap.LIST_FILE:
 				conf = configManager.getConfig( actionCode );
-				Set set = conf.keySet();
-				for(Iterator iter = set.iterator(); iter.hasNext();)
+				Set<String> set = conf.keySet();
+				for(Iterator<String> iter = set.iterator(); iter.hasNext();)
 				{
 				   String key = (String)iter.next();
-				   System.out.println(key+"===="+conf.get(key));
+				   System.out.println("键值对：\n"+key+"===="+conf.get(key)+"\n");
 				}
 				int start = this.getStartIndex();
 				state = new FileManager( conf ).listFile( start );
-				System.out.println("打印出state的信息："+state.toJSONString());
+				System.out.println("打印出state的信息：\n"+state.toJSONString());
 				break;
 				
 		}

@@ -895,8 +895,7 @@
         /* 添加图片到列表界面上 */
         pushData: function (list) {
             var i, item, img, icon, _this = this,
-                urlPrefix = editor.getOpt('imageManagerUrlPrefix');
-            alert(urlPrefix);
+                urlPrefix = editor.getOpt('imageManagerUrlPrefix');/*获取到图片访问路径前*/
             for (i = 0; i < list.length; i++) {
                 if(list[i] && list[i].url) {
                     item = document.createElement('li');
@@ -910,9 +909,7 @@
                     })(img));
                     img.width = 113;
                     img.setAttribute('src', urlPrefix + list[i].url + (list[i].url.indexOf('?') == -1 ? '?noCache=':'&noCache=') + (+new Date()).toString(36) );
-                    alert(urlPrefix + list[i].url + (list[i].url.indexOf('?') == -1 ? '?noCache=':'&noCache=') + (+new Date()).toString(36) );
                     img.setAttribute('_src', urlPrefix + list[i].url);
-                    alert(urlPrefix + list[i].url );
                     domUtils.addClass(icon, 'icon');
 
                     item.appendChild(img);

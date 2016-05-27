@@ -27,16 +27,21 @@ public class FileManager {
 		this.dir = this.rootPath + (String)conf.get( "dir" );
 		this.allowFiles = this.getAllowFiles( conf.get("allowFiles") );
 		this.count = (Integer)conf.get( "count" );
-		this.savePath = (String)conf.get( "savePath" );
+		//修正state中url为服务器绝对路径的错误
+		this.savePath = (String)conf.get( "dir" );
 		
-		System.out.println("s-->"+this.savePath);
-		System.out.println("s1-->"+(String)conf.get( "savePath" ));
-		System.out.println("d-->"+this.dir);
-		System.out.println("r-->"+this.rootPath);
+		System.out.println("FileManager中的元素：\n"+
+				"rootPath-->"+this.rootPath+"\n"+
+				"dir-->"+this.dir+"\n"+
+				"allowFiles-->"+this.allowFiles+"\n"+
+				"count-->"+this.count+"\n"+
+				"savePath-->"+this.savePath+"\n"
+				);
 	}
 	
 	public State listFile ( int index ) {
 		
+		System.out.println("ListFile中的定位的dir值为"+this.dir);
 		File dir = new File( this.dir );
 		State state = null;
 
@@ -54,19 +59,17 @@ public class FileManager {
 			state = new MultiState( true );
 		} else {
 			Object[] fileList = Arrays.copyOfRange( list.toArray(), index, index + this.count );
-			state = this.getState( fileList );
+			state = this.getState( fileList ,this.savePath);
 		}
 		
 		state.putInfo( "start", index );
 		state.putInfo( "total", list.size());
 		
-		
-		
 		return state;
 		
 	}
 	
-	private State getState ( Object[] files ) {
+	private State getState ( Object[] files ,String savePath) {
 		
 		MultiState state = new MultiState( true );
 		BaseState fileState = null;
@@ -79,7 +82,10 @@ public class FileManager {
 			}
 			file = (File)obj;
 			fileState = new BaseState( true );
-			fileState.putInfo( "url", PathFormat.format( this.getPath( file ) ) );
+			String absolutePath = PathFormat.format( this.getPath( file ));
+			String relativePath=absolutePath.substring(absolutePath.indexOf(PathFormat.format( savePath )));
+			//fileState.putInfo( "url", PathFormat.format( this.getPath( file ) ) );
+			fileState.putInfo( "url", relativePath );
 			state.addState( fileState );
 		}
 		
